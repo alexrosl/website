@@ -1,0 +1,36 @@
+<% include ../partials/header %>
+
+
+<div class="container">
+        <h1>Список полезных ссылок</h1>
+         <p>
+           <form action="/links" method="GET" class="form-inline">
+               <div class="form-group">
+                   <input type="text" name="search" placeholder="Найти ссылки" class="form-control">
+                   <input type="submit" value= "Поиск" class="btn btn-default">
+               </div>
+           </form>
+         </p>
+         <% if(noMatch !== null) { %>
+            <h3><%= noMatch %></h3>
+         <% } %>
+            <div class="row">
+              <% links.forEach(function(link){ %>
+              <div class="col-md-4">
+                <h2><%= link.name %></h2>
+                <p><%= link.description %></p>
+                <p><a class="btn btn-success" href="<%= link.link %>" role="button">Перейти к статье</a></p>
+                <a class="btn btn-xs btn-warning" href="/links/<%= link._id %>/edit" role="button">Редактировать</a>
+                <form id="delete-form" action="/links/<%= link._id %>?_method=DELETE" method="POST">
+                    <button class="btn btn-xs btn-danger">Удалить</button>
+                </form>
+              </div>
+              <% }) %>
+            </div>    
+        
+        <hr>
+        <p><a class="btn btn-primary" href="/links/new" role="button">Добавить ссылку</a></p>
+
+</div> <!-- /container -->
+
+<% include ../partials/footer %>

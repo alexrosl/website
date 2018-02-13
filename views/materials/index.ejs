@@ -1,0 +1,72 @@
+<% include ../partials/header %>
+
+
+
+<div class="container">
+    <div class="row">
+        
+        <div class="col-md-3">
+            <h1></h1>
+            <p class="lead">Рубрики</p>
+            <div class="list-group">
+                
+                <% links.forEach(function(link){ %>
+                    <a href="/materials/category/<%= category._id %>" class="list-group-item list-group-item-action"><%= category.name  %></a>
+                <% }) %>
+
+            </div>
+            <div class="list-group">
+                <a class="list-group-item list-group-item-success" href="/materials/category/new">Добавить категорию</a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <h1>Материалы для занятий</h1>
+            <div class="thumbnail">
+                
+                    <div class="thumbnail">
+                        <img class="image-responsive" src="https://farm7.staticflickr.com/6057/6234565071_4d20668bbd.jpg">
+                    </div>
+
+                <div class="caption-full">
+                    
+                    <h4><a>Подпись к картинке</a></h4>
+                    <p><div>text3</div></p>
+                    <p>
+                        <em>Submitted at 2018-01-01</em>
+                    </p>
+
+                        <a class="btn btn-xs btn-warning" href="/materials/1234567890/edit">Edit</a>
+                        <form id="delete-form" action="/materials/1234567890?_method=DELETE" method="POST">
+                            <button class="btn btn-xs btn-danger">Удалить</button>
+                        </form>
+                </div>
+            </div>
+            <!--<div class="well thumbnail">-->
+            <!--    <div class="text-right">-->
+            <!--        <a class="btn btn-success" href="/campgrounds/1234567890/comments/new">Add new comment</a>-->
+            <!--    </div>-->
+            <!--    <hr>-->
+
+            <!--        <div class="row">-->
+            <!--            <div class="col-md-12">-->
+            <!--                <strong>comment author</strong>-->
+            <!--                <span class="pull-right">10 days ago</span>-->
+            <!--                 <p>-->
+            <!--                     comment text-->
+            <!--                </p>-->
+
+            <!--                    <a class="btn btn-xs btn-warning"-->
+            <!--                        href="/campgrounds/1234567890/comments/9876543210/edit">Edit</a>-->
+            <!--                    <form id="delete-form" action="/campgrounds/1234567890/comments/9876543210?_method=DELETE" method="POST">-->
+            <!--                        <input type="submit" class="btn btn-xs btn-danger" value="Delete">-->
+            <!--                    </form>-->
+
+            <!--            </div>-->
+            <!--        </div>-->
+
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+
+<% include ../partials/footer %>

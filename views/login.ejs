@@ -1,0 +1,25 @@
+<% include partials/header %>
+
+
+<div class="container">
+    <div class="row">
+        <h1>Войти на сайт</h1>
+        <div style="width: 30%; margin: 25px auto">
+            <form action="/login" method="POST">
+                <div class="form-row">
+                    <div class="form-group">
+                      <input type="text" name="username" class="form-control" placeholder="логин">
+                    </div>
+                    <div class="form-group">
+                      <input type="password" name="password" class="form-control" placeholder="пароль">
+                    </div>
+                    <div class="form-group">
+                      <input type="submit" class="btn btn-success" value="Войти">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<% include partials/footer %>

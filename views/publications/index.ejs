@@ -1,0 +1,38 @@
+<% include ../partials/header %>
+
+
+<div class="container">
+        <h1>Мои публикации</h1>
+        <!-- Example row of columns -->
+        <p>
+           <form action="/publications" method="GET" class="form-inline">
+               <div class="form-group">
+                   <input type="text" name="search" placeholder="Найти публикации" class="form-control">
+                   <input type="submit" value= "Поиск" class="btn btn-default">
+               </div>
+           </form>
+         </p>
+         <% if(noMatch !== null) { %>
+            <h3><%= noMatch %></h3>
+         <% } %>
+         
+         
+            <div class="row">
+              <% publications.forEach(function(publication){ %>
+              <div class="col-md-4">
+                <h2><%= publication.name %></h2>
+                <p><%= publication.description %></p>
+                <p><a class="btn btn-success" href="<%= publication.link %>" role="button">Перейти к публикации</a></p>
+                <a class="btn btn-xs btn-warning" href="/publications/<%= publication._id %>/edit" role="button">Редактировать</a>
+                <form id="delete-form" action="/publications/<%= publication._id %>?_method=DELETE" method="POST">
+                    <button class="btn btn-xs btn-danger">Удалить</button>
+                </form>
+              </div>
+              <% }) %>
+            </div>
+        <hr>
+        <p><a class="btn btn-primary" href="/publications/new" role="button">Добавить публикацию</a></p>
+
+</div> <!-- /container -->
+
+<% include ../partials/footer %>

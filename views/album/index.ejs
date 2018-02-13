@@ -1,0 +1,38 @@
+<% include ../partials/header %>
+
+<div class="container">
+    
+     <p>
+       <form action="/album" method="GET" class="form-inline">
+           <div class="form-group">
+               <input type="text" name="search" placeholder="Найти изображения" class="form-control">
+               <input type="submit" value= "Поиск" class="btn btn-default">
+           </div>
+       </form>
+     </p>
+     
+     <% if(noMatch !== null) { %>
+        <h3><%= noMatch %></h3>
+     <% } %>
+    <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+        <% album.forEach(function(image){ %>
+            <div class="col-md-6 col-lg-4">
+                <div class=" thumbnail">
+                    <div class="crop">
+                        <img src="<%= image.image %>">
+                    </div>
+                    <div class="caption">
+                        <h4><%= image.name %></h4>
+                    </div>
+                    <p>
+                        <a href="/album/<%= image._id  %>" class="btn btn-primary">Подробнее о фотографии</a>
+                    </p>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+    <hr>
+    <p><a class="btn btn-primary" href="/album/new" role="button">Добавить изображение</a></p>
+</div>
+
+<% include ../partials/footer %>

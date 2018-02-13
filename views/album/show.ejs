@@ -1,0 +1,25 @@
+<% include ../partials/header %>
+
+<div class="container">
+    <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+
+            <div class="col-md-8 col-md-offset-2 col-sm-12">
+                <div class="thumbnail">
+                    <img src="<%= image.image %>">
+                    <div class="caption">
+                        <h4><%= image.name %></h4>
+                    </div>
+                    <hr>
+                    <div class="caption">
+                        <h4><%= image.description %></h4>
+                    </div>
+                    <a class="btn btn-xs btn-warning" href="/album/<%= image._id %>/edit" role="button">Редактировать</a>
+                    <form id="delete-form" action="/album/<%= image._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-xs btn-danger">Удалить</button>
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+
+<% include ../partials/footer %>
