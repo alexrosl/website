@@ -6,13 +6,13 @@ var middleware = require("../middleware")
 router.get("/", function(req, res){
     var noMatch = null;
     if(req.query.search){
-        const regex = new RegExp(escapeRegex(req.query.search), "gi");
+        const regex = new RegExp(middleware.escapeRegex(req.query.search), "gi");
         Link.find({$or:[{name: regex},{link:regex},{description:regex}]} , function(err, allLinks){
             if (err){
                 console.log(err);
             } else {
                 if(allLinks.length < 1){
-                    noMatch = "Не найдено ссылок с названием " + escapeRegex(req.query.search);
+                    noMatch = "Не найдено ссылок с названием " + middleware.escapeRegex(req.query.search);
                 }
                 res.render("links/index", {links: allLinks, noMatch: noMatch});
             }
@@ -83,8 +83,6 @@ router.delete("/:id", middleware.isLoggedIn, function(req, res){
     })
 })
 
-function escapeRegex(text) {
-    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-}
+
 
 module.exports = router;

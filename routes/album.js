@@ -17,13 +17,13 @@ var upload = multer({storage: storage}).single("image");
 router.get("/", function(req, res){
     var noMatch = null;
     if(req.query.search){
-        const regex = new RegExp(escapeRegex(req.query.search), "gi");
+        const regex = new RegExp(middleware.escapeRegex(req.query.search), "gi");
         Album.find({$or:[{name: regex},{description:regex}]} , function(err, allImages){
             if (err){
                 console.log(err);
             } else {
                 if(allImages.length < 1){
-                    noMatch = "Не найдено изображений с названием " + escapeRegex(req.query.search);
+                    noMatch = "Не найдено изображений с названием " + middleware.escapeRegex(req.query.search);
                 }
                 res.render("album/index", {album: allImages, noMatch: noMatch});
             }
@@ -140,9 +140,5 @@ router.delete("/:id", middleware.isLoggedIn, function(req, res){
         }
     })
 })
-
-function escapeRegex(text) {
-    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-}
 
 module.exports = router;

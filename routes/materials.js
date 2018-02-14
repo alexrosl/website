@@ -17,16 +17,53 @@ var upload = multer({storage: storage}).any("image", 5);
 
 
 router.get("/", function(req, res){
-    Category.find({}).populate("materials").exec(function(err, allCategories){
+    var noMatch = null;
+    if(req.query.search){
+        console.log(req.query);
+        const regex = new RegExp(middleware.escapeRegex(req.query.search), "gi");
+        Category.find({}).populate({
+            path: "materials",
+            match: {$or:[{name: regex},{content:regex},{description:regex}]}
+            }).exec(function(err, allCategories){
             if(err){
                 console.log(err);
-                return res.redirect("back");
+                req.flash("error", "не удалось выполнить поиск")
+            } else {
+                var numMaterials = 0;
+                
+                allCategories.forEach(function(category){
+                    if(category.materials.length > 0){
+                        numMaterials = numMaterials + category.materials.length;
+                    }
+                })
+                console.log(numMaterials)
+                if(numMaterials < 1){
+                    noMatch = "Не найдено материалов по запросу " + middleware.escapeRegex(req.query.search);
+                } else{
+                    noMatch = "Количество найденных материалов: " + numMaterials;
+                }
+                res.render("materials/index", {categories: allCategories, noMatch: noMatch});
+            }
+        })
+        
+    //     path: 'fans',
+    // match: { age: { $gte: 21 }},
+    // // Explicitly exclude `_id`, see http://bit.ly/2aEfTdB
+    // select: 'name -_id',
+    // options: { limit: 5 }
+    } 
+    
+    else {
+        Category.find({}).populate("materials").exec(function(err, allCategories){
+            if(err){
+                console.log(err);
+                return res.redirect("back")
             }
             else {
-                console.log(allCategories);
-                res.render("materials/index", {categories: allCategories});
+                res.render("materials/index", {categories: allCategories, noMatch: noMatch});
             }
-    }) ;   
+        })
+    }
 });
 
 router.get("/category/:id", function(req, res){

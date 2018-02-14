@@ -6,13 +6,13 @@ var middleware = require("../middleware");
 router.get("/", function(req, res){
     var noMatch = null;
     if(req.query.search){
-        const regex = new RegExp(escapeRegex(req.query.search), "gi");
+        const regex = new RegExp(middleware.escapeRegex(req.query.search), "gi");
         Publication.find({$or:[{name: regex},{link:regex},{description:regex}]} , function(err, allPublications){
             if (err){
                 console.log(err);
             } else {
                 if(allPublications.length < 1){
-                    noMatch = "Не найдено публикаций по строке " + escapeRegex(req.query.search);
+                    noMatch = "Не найдено публикаций по строке " + middleware.escapeRegex(req.query.search);
                 }
                 res.render("publications/index", {publications: allPublications, noMatch: noMatch});
             }
@@ -84,9 +84,5 @@ router.delete("/:id", middleware.isLoggedIn, function(req, res){
         }
     });
 });
-
-function escapeRegex(text) {
-    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-}
 
 module.exports = router;
