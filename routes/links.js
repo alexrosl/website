@@ -16,17 +16,17 @@ router.get("/", function(req, res){
                 }
                 res.render("links/index", {links: allLinks, noMatch: noMatch});
             }
-        })    
+        }); 
     } else {
         Link.find({}, function(err, allLinks){
             if(err){
                 console.log(err);
-                return res.redirect("back")
+                return res.redirect("back");
             }
             else {
                 res.render("links/index", {links: allLinks, noMatch: noMatch});
             }
-        })
+        });
     }
 });
 
@@ -34,13 +34,16 @@ router.post("/", middleware.isLoggedIn, function(req, res){
     Link.create(req.body.link, function(err, createdLink){
         if(err){
             console.log(err);
-            return res.redirect("/links")
+            return res.redirect("/links");
         } else {
+            if ((createdLink == null) || (createdLink == undefined)){
+                return res.redirect("/links");
+            }
             req.flash("success", "Вы успешно добавили новую ссылку");
-            res.redirect("/links")
+            res.redirect("/links");
         }
-    })
-})
+    });
+});
 
 router.get("/new", middleware.isLoggedIn, function(req,res){
     res.render("links/new");
@@ -53,6 +56,9 @@ router.get("/:id/edit", middleware.isLoggedIn, function(req, res){
             res.redirect("/links");
         }
         else {
+            if ((foundLink == null) || (foundLink == undefined)){
+                return res.redirect("/links")
+            }
             res.render("links/edit", {link: foundLink});
         }
     })
@@ -64,6 +70,9 @@ router.put("/:id", middleware.isLoggedIn, function(req, res){
             console.log(err);
             res.redirect("/links");
         } else {
+            if ((updatedLink == null) || (updatedLink == undefined)){
+                return res.redirect("/links")
+            }
             req.flash("success", "Вы успешно обновили ссылку");
             res.redirect("/links")
         }

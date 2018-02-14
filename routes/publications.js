@@ -54,6 +54,9 @@ router.get("/:id/edit", middleware.isLoggedIn, function(req, res){
             res.redirect("/publications");
         }
         else {
+            if ((foundPublication == null) || (foundPublication == undefined)){
+                return res.redirect("/publications")
+            }
             res.render("publications/edit", {publication: foundPublication});
         }
     });
@@ -66,6 +69,9 @@ router.put("/:id", middleware.isLoggedIn, function(req, res){
             req.flash("error", "Не удалось обновить публикацию");
             res.redirect("/publications");
         } else {
+            if ((updatedPublication == null) || (updatedPublication == undefined)){
+                return res.redirect("/publications")
+            }
             req.flash("success", "Вы успешно обновили публикацию");
             res.redirect("/publications");
         }

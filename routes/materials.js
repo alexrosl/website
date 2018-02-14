@@ -27,7 +27,7 @@ router.get("/", function(req, res){
             }).exec(function(err, allCategories){
             if(err){
                 console.log(err);
-                req.flash("error", "не удалось выполнить поиск")
+                req.flash("error", "не удалось выполнить поиск");
             } else {
                 var numMaterials = 0;
                 
@@ -35,8 +35,8 @@ router.get("/", function(req, res){
                     if(category.materials.length > 0){
                         numMaterials = numMaterials + category.materials.length;
                     }
-                })
-                console.log(numMaterials)
+                });
+                console.log(numMaterials);
                 if(numMaterials < 1){
                     noMatch = "Не найдено материалов по запросу " + middleware.escapeRegex(req.query.search);
                 } else{
@@ -44,7 +44,7 @@ router.get("/", function(req, res){
                 }
                 res.render("materials/index", {categories: allCategories, noMatch: noMatch});
             }
-        })
+        });
         
     //     path: 'fans',
     // match: { age: { $gte: 21 }},
@@ -57,12 +57,12 @@ router.get("/", function(req, res){
         Category.find({}).populate("materials").exec(function(err, allCategories){
             if(err){
                 console.log(err);
-                return res.redirect("back")
+                return res.redirect("back");
             }
             else {
                 res.render("materials/index", {categories: allCategories, noMatch: noMatch});
             }
-        })
+        });
     }
 });
 
@@ -98,11 +98,17 @@ router.get("/category/:category_id/material/:material_id", function(req, res){
             console.log(err);
             req.flash("error", "не удалось получить информацию о категории")
         } else {
+            if ((foundCategory == null) || (foundCategory == undefined)){
+                return res.redirect("/materials")
+            }
             Material.findById(req.params.material_id, function(err, foundMaterial){
                 if(err){
                     console.log(err);
                     req.flash("error", "Не удалось получить информацию о материале")
                 } else {
+                    if ((foundMaterial == null) || (foundMaterial == undefined)){
+                        return res.redirect("/materials")
+                    }
                     res.render("materials/show", {category: foundCategory, material: foundMaterial})
                 }
             })
@@ -120,7 +126,10 @@ router.get("/category/:id/new", middleware.isLoggedIn, function(req, res){
             console.log(err);
             req.flash("error", "не удалось загрузить страницу добавления материала в категорию");
         } else {
-            console.log(foundCategory);
+            // console.log(foundCategory);
+            if ((foundCategory == null) || (foundCategory == undefined)){
+                return res.redirect("/materials")
+            }
             res.render("materials/new", {category: foundCategory});
         }
     });
@@ -132,6 +141,9 @@ router.get("/category/:id/edit", middleware.isLoggedIn,  function(req, res){
             console.log(err);
             req.flash("error", "не удалось загрузить страницу изменения категории");
         } else {
+            if ((foundCategory == null) || (foundCategory == undefined)){
+                return res.redirect("/materials")
+            }
             res.render("categories/edit", {category: foundCategory});
         }
     });
@@ -145,10 +157,16 @@ router.get("/category/:category_id/material/:material_id/edit", middleware.isLog
             res.redirect("/materials");
         } else {
             // console.log(foundCategory)
+            if ((foundCategory == null) || (foundCategory == undefined)){
+                return res.redirect("/materials")
+            }
             Material.findById(req.params.material_id, function(err, foundMaterial){
                 if(err){
                     console.log(err);
                 } else {
+                    if ((foundMaterial == null) || (foundMaterial == undefined)){
+                        return res.redirect("/materials")
+                    }
                     res.render("materials/edit", {category: foundCategory, material: foundMaterial});
                 }
             });
@@ -176,6 +194,9 @@ router.post("/category/:id/material", middleware.isLoggedIn, function(req, res){
            req.flash("не удалось найти категорию");
            res.redirect("/materials");
        } else {
+           if ((foundCategory == null) || (foundCategory == undefined)){
+                return res.redirect("/materials")
+            }
            upload(req, res, function(err){
                 if(err) {
                     console.log(err);

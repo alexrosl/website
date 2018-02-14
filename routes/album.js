@@ -85,6 +85,9 @@ router.get("/:id", function(req, res){
             console.log(err);
             res.redirect("/album");
         } else {
+            if ((foundImage == null) || (foundImage == undefined)){
+                return res.redirect("/album")
+            }
             res.render("album/show", {image: foundImage});
         }
     });
@@ -97,6 +100,9 @@ router.get("/:id/edit", middleware.isLoggedIn, function(req, res){
             res.redirect("/album");
         }
         else {
+            if ((foundImage == null) || (foundImage == undefined)){
+                return res.redirect("/album")
+            }
             res.render("album/edit", {image: foundImage});
         }
     });
@@ -121,6 +127,9 @@ router.put("/:id", middleware.isLoggedIn, function(req, res){
                 req.flash("error", "Не удалось изменить изображение");
                 res.redirect("/album");
             } else {
+                if ((updatedImage == null) || (updatedImage == undefined)){
+                    return res.redirect("/album")
+                }
                 req.flash("success", "Вы успешно изменили изображение");
                 res.redirect("/album/" + req.params.id);
             }
