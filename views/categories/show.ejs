@@ -1,0 +1,53 @@
+<% include ../partials/header %>
+
+
+
+<div class="container">
+    <div class="row">
+        
+        <div class="col-md-3">
+            <h1></h1>
+            <p class="lead">Разделы</p>
+            <div class="list-group">
+                
+                <% categories.forEach(function(categoryLoop){ %>
+                <div class="list-group-item 
+                <% if (categoryLoop._id.equals(category._id)) { %>
+                        list-group-item-info
+                    <% } %>
+                ">    
+                    <a href="/materials/category/<%= categoryLoop._id %>"><%= categoryLoop.name%></a>
+                    <a href="/materials/category/<%= categoryLoop._id %>/edit"><i class="fa fa-edit pull-right"></i></a>
+                </div>
+                <% }) %>
+            </div>
+            <div class="list-group">
+                <a class="list-group-item list-group-item-success" href="/materials/category/new">Добавить категорию</a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <h1><%= category.name %> <a class="btn btn-warning pull-right" href="/materials/category/<%= category._id %>/new">Добавить материал</a></h1>
+            <div class="thumbnail">
+                <% category.materials.forEach(function(material){ %>
+                    <% for(var i = 0; i < material.images.length; i++) { %>
+                        <div class="thumbnail">
+                            <img class="image-responsive" src="<%= material.images[i] %>">
+                        </div>
+                    <% } %>
+
+                    <div class="caption-full">
+                        <h4 class="pull-right"><%= category.name %></h4>
+                        <h4><a href="/materials/category/<%= category._id %>/material/<%= material._id %>"><%= material.name %></a></h4>
+                        <p><div><%= material.description %></div></p>
+                        <a class="btn btn-xs btn-warning" href="/materials/category/<%= category._id %>/material/<%= material._id %>/edit">Редактировать</a>
+                        <form id="delete-form" action="/materials/category/<%= category._id %>/material/<%= material._id %>?_method=DELETE" method="POST">
+                            <button class="btn btn-xs btn-danger">Удалить</button>
+                        </form>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% include ../partials/footer %>

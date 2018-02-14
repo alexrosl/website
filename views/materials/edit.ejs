@@ -1,0 +1,41 @@
+<% include ../partials/header %>
+
+<div class="container">
+    <div class="row">
+        <h1>Изменить материал <em><%= material.name %></em> в категории <em><%= category.name %></em></h1>
+        <div style="width: 40%; margin: 25px auto">
+            <form action="/materials/category/<%= category._id %>/material/<%= material._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+                <div class="form-row">
+                    <div class="form-group">
+                      <input type="text" name="material[name]" class="form-control" value="<%= material.name %>">
+                    </div>
+                    <div class="form-group">
+                      <input type="text" name="material[description]" class="form-control" value="<%= material.description %>">
+                    </div>
+                    <div class="form-group">
+                      <input type="text" name="material[content]" class="form-control" value="<%= material.content %>">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="file" name="images" multiple="multiple">
+                    </div>
+                    <% if(!material.images.includes("/uploads/no-image.png")) { %>
+                        <% for (var i = 0; i < material.images.length; i++) { %>
+                        <div class="checkbox">
+                            <img src="<%= material.images[i] %>" width="50px">
+                            <label>
+                                <input type="checkbox" value="<%= material.images[i] %>" name="removals[]">Удалить изображение?
+                            </label>
+                        </div>
+                        <% } %>
+                    <% } %>
+                    <div class="form-group">
+                      <input type="submit" class="btn btn-success" value="Сохранить">
+                    </div>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+<% include ../partials/footer %>
