@@ -76,6 +76,10 @@ router.get("/logout", function(req,res){
     res.redirect("/index");
 })
 
+router.get("/experiments", function(req, res){
+    res.render("experiments", {error: "ошибка"});
+})
+
 router.get("*", function(req,res){
     res.render("404")
 })
